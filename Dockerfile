@@ -25,6 +25,9 @@ WORKDIR /openclaw
 ARG OPENCLAW_GIT_REF=v2026.4.8
 RUN git clone --depth 1 --branch "${OPENCLAW_GIT_REF}" https://github.com/openclaw/openclaw.git .
 
+# Allow only this package to bypass pnpm minimum release age restriction
+RUN echo "minimum-release-age-exclude[]=@aws-sdk/client-bedrock" >> .npmrc
+
 # Patch: relax version requirements for packages that may reference unpublished versions.
 # Apply to all extension package.json files to handle workspace protocol (workspace:*).
 RUN set -eux; \
